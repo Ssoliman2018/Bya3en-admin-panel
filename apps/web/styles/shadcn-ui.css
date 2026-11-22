@@ -1,0 +1,102 @@
+/*
+ * Bayya3een | Neon Souq theme (from prototype + BRD §4)
+ */
+
+@layer base {
+  :root {
+    /* Brand tokens */
+    --brand-violet: #7a00ff;
+    --brand-violet-strong: #5e00c7;
+    --brand-violet-soft: #f1e8ff;
+    --brand-orange: #ff8a00;
+    --brand-orange-soft: #fff1df;
+    --brand-cyan: #00d4ff;
+    --brand-navy: #0b0f2e;
+    --glow-magenta: #e62bd9;
+
+    --background: #f6f5fb;
+    --foreground: #0b0f2e;
+
+    --card: #ffffff;
+    --card-foreground: #0b0f2e;
+
+    --popover: #ffffff;
+    --popover-foreground: #0b0f2e;
+
+    --primary: #7a00ff;
+    --primary-foreground: #ffffff;
+
+    --secondary: #f1e8ff;
+    --secondary-foreground: #5e00c7;
+
+    --muted: #f1f0f7;
+    --muted-foreground: #585c78;
+
+    --accent: #f1e8ff;
+    --accent-foreground: #5e00c7;
+
+    --destructive: #b3261e;
+    --destructive-foreground: #ffffff;
+
+    --border: #e2e0ee;
+    --input: #e2e0ee;
+    --ring: #7a00ff;
+
+    --radius: 0.75rem;
+
+    --chart-1: #7a00ff;
+    --chart-2: #ff8a00;
+    --chart-3: #00d4ff;
+    --chart-4: #0a6b37;
+    --chart-5: #e62bd9;
+
+    /* Navy brand sidebar (prototype) */
+    --sidebar-background: #0b0f2e;
+    --sidebar-foreground: #c9cbe3;
+    --sidebar-primary: #7a00ff;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: rgba(122, 0, 255, 0.28);
+    --sidebar-accent-foreground: #ffffff;
+    --sidebar-border: #1f2557;
+    --sidebar-ring: #ff8a00;
+  }
+
+  .dark {
+    --background: #0b0f2e;
+    --foreground: #f4f2ff;
+
+    --card: #151a45;
+    --card-foreground: #f4f2ff;
+
+    --popover: #151a45;
+    --popover-foreground: #f4f2ff;
+
+    --primary: #7a00ff;
+    --primary-foreground: #ffffff;
+
+    --secondary: #24165a;
+    --secondary-foreground: #f4f2ff;
+
+    --muted: #1a2048;
+    --muted-foreground: #a7aacb;
+
+    --accent: #24165a;
+    --accent-foreground: #f4f2ff;
+
+    --destructive: #b3261e;
+    --destructive-foreground: #ffffff;
+
+    --border: #2b3270;
+    --input: #2b3270;
+    --ring: #7a00ff;
+
+    --sidebar-background: #0b0f2e;
+    --sidebar-foreground: #c9cbe3;
+    --sidebar-primary: #7a00ff;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: rgba(122, 0, 255, 0.35);
+    --sidebar-accent-foreground: #ffffff;
+    --sidebar-border: #1f2557;
+    --sidebar-ring: #ff8a00;
+  }
+}
