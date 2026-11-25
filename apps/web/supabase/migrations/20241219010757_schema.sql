@@ -44,25 +44,46 @@ revoke all PRIVILEGES on all SEQUENCES in schema "public"
     from
     "anon";
 
-revoke all PRIVILEGES on all SEQUENCES in schema "storage"
-    from
-    "anon";
+-- Hosted Supabase owns some storage objects as supabase_storage_admin, so
+--   revoking on them fails for postgres; skip those instead of aborting.
+do $$
+begin
+  revoke all privileges on all sequences in schema storage from anon;
+exception when insufficient_privilege then null;
+end $$;
 
 revoke all PRIVILEGES on all FUNCTIONS in schema "public"
     from
     "anon";
 
-revoke all PRIVILEGES on all FUNCTIONS in schema "storage"
-    from
-    "anon";
+do $$
+declare
+  f record;
+begin
+  for f in select p.oid::regprocedure as sig from pg_proc p where p.pronamespace = 'storage'::regnamespace loop
+    begin
+      execute format('revoke all privileges on function %s from anon', f.sig);
+    exception when insufficient_privilege then null;
+    end;
+  end loop;
+end $$;
 
 revoke all PRIVILEGES on all TABLES in schema "public"
     from
     "anon";
 
-revoke all PRIVILEGES on all TABLES in schema "storage"
-    from
-    "anon";
+do $$
+declare
+  t record;
+begin
+  for t in select c.oid::regclass as rel from pg_class c
+    where c.relnamespace = 'storage'::regnamespace and c.relkind in ('r', 'v', 'm', 'p') loop
+    begin
+      execute format('revoke all privileges on table %s from anon', t.rel);
+    exception when insufficient_privilege then null;
+    end;
+  end loop;
+end $$;
 
 -- We remove all default privileges from public schema on functions to
 --   prevent public access to them by default

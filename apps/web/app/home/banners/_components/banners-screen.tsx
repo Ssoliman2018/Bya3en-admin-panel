@@ -117,13 +117,8 @@ export function BannersScreen({
       if (error) throw error;
 
       const { data } = supabase.storage.from(BANNER_BUCKET).getPublicUrl(path);
-      // Prefer localhost URL shape used by mobile simulator
-      const publicUrl = data.publicUrl.replace(
-        /^https?:\/\/[^/]+/,
-        'http://127.0.0.1:54321',
-      );
 
-      setForm((f) => ({ ...f, imageUrl: publicUrl }));
+      setForm((f) => ({ ...f, imageUrl: data.publicUrl }));
       toast.success('اترفعت الصورة على Storage — هتظهر على الموبايل');
     } catch (error) {
       toast.error(
