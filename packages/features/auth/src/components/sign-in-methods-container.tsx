@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 import type { Provider } from '@supabase/supabase-js';
 
@@ -24,7 +24,6 @@ export function SignInMethodsContainer(props: {
     oAuth: Provider[];
   };
 }) {
-  const router = useRouter();
   const nextPath = useSearchParams().get('next') ?? props.paths.home;
 
   const redirectUrl = isBrowser()
@@ -32,7 +31,9 @@ export function SignInMethodsContainer(props: {
     : '';
 
   const onSignIn = () => {
-    router.replace(nextPath);
+    // Full navigation so auth cookies set by the browser client are
+    // included on the first /home request (soft replace can race middleware).
+    window.location.assign(nextPath);
   };
 
   return (
