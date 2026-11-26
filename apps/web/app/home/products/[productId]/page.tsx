@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { connection } from 'next/server';
 
 import { ArrowRight, Package, Tag } from 'lucide-react';
 import { Button } from '@kit/ui/button';
@@ -21,6 +22,7 @@ export default async function ProductDetailPage({
 }: {
   params: Promise<{ productId: string }>;
 }) {
+  await connection();
   const { productId } = await params;
   const [product, categories] = await Promise.all([
     loadProduct(productId),

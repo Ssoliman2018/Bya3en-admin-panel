@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { connection } from 'next/server';
 
 import { ArrowRight, Package, Plus } from 'lucide-react';
 import { Button } from '@kit/ui/button';
@@ -15,6 +16,7 @@ export const metadata = {
 };
 
 export default async function NewProductPage() {
+  await connection();
   const categories = await loadCategories();
 
   return (

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { connection } from 'next/server';
 
 import { ArrowRight, BadgePercent, MapPin, Store, User } from 'lucide-react';
 import { Button } from '@kit/ui/button';
@@ -32,6 +33,7 @@ export default async function MerchantDetailPage({
 }: {
   params: Promise<{ merchantId: string }>;
 }) {
+  await connection();
   const { merchantId } = await params;
   const merchant = await loadMerchant(merchantId);
 

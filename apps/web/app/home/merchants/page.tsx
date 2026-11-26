@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { connection } from 'next/server';
 
 import { BadgeCheck, Clock3, Store, UserX } from 'lucide-react';
 import { PageBody } from '@kit/ui/page';
@@ -27,6 +28,7 @@ export default async function MerchantsPage({
 }: {
   searchParams: Promise<{ status?: string }>;
 }) {
+  await connection();
   const params = await searchParams;
   const status = params.status ?? 'all';
   const [merchants, counts] = await Promise.all([
