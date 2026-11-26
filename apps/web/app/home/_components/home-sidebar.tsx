@@ -37,7 +37,10 @@ export function HomeSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarNavigation config={navigationConfig} />
+        {/* usePathname() inside SidebarNavigation must stream after prerender on dynamic routes */}
+        <Suspense fallback={<NavigationFallback />}>
+          <SidebarNavigation config={navigationConfig} />
+        </Suspense>
       </SidebarContent>
 
       <SidebarFooter className="border-t border-[#1F2557]">
@@ -63,6 +66,16 @@ function AccountDropdownFallback() {
     <div className={'flex items-center gap-x-2 p-2'}>
       <Skeleton className={'size-8 shrink-0 rounded-full'} />
       <Skeleton className={'h-4 w-full'} />
+    </div>
+  );
+}
+
+function NavigationFallback() {
+  return (
+    <div className="flex flex-col gap-2 p-2">
+      {Array.from({ length: 8 }).map((_, i) => (
+        <Skeleton key={i} className="h-9 w-full rounded-lg" />
+      ))}
     </div>
   );
 }
