@@ -251,18 +251,22 @@ export function ProductDetailPanel({
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="commissionRate">عمولة %</Label>
-                <Input
-                  id="commissionRate"
+                <Label>عمولة البيّاع</Label>
+                <div className="by-note flex h-10 items-center text-sm">
+                  {product.commission_rate != null
+                    ? `${Number(product.commission_rate)}%`
+                    : '—'}
+                  <span className="text-muted-foreground ms-2 text-xs">
+                    للعرض فقط · منتجات التاجر من فرق السعرين
+                  </span>
+                </div>
+                <input
+                  type="hidden"
                   name="commissionRate"
-                  type="number"
-                  min={0}
-                  max={100}
-                  step="0.1"
-                  defaultValue={
+                  value={
                     product.commission_rate != null
                       ? Number(product.commission_rate)
-                      : undefined
+                      : 8
                   }
                 />
               </div>

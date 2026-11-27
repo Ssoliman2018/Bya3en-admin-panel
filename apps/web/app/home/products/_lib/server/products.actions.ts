@@ -179,27 +179,12 @@ const UpdateCommissionSchema = z.object({
   commissionRate: z.coerce.number().min(0).max(40),
 });
 
+/** Seller commission is derived from merchant customer/seller prices — admin cannot override. */
 export const updateProductCommissionAction = enhanceAction(
-  async (data) => {
-    const client = getSupabaseServerClient();
-    const authUserId = await resolveAuthUserId(client);
-
-    const { error } = await client
-      .from('products')
-      .update({
-        commission_rate: data.commissionRate,
-        updated_by: authUserId,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', data.productId);
-
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    revalidatePath(pathsConfig.app.products);
-
-    return { success: true as const };
+  async () => {
+    throw new Error(
+      'عمولة البيّاع بتتحدد من فرق سعر العميل وسعر البيّاع اللي حاطه التاجر · مش قابلة للتعديل من الأدمن',
+    );
   },
   {
     schema: UpdateCommissionSchema,

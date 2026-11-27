@@ -105,9 +105,16 @@ export function MerchantProductSheet({
               )}
             </dd>
 
-            <dt className="text-muted-foreground font-medium">السعر</dt>
+            <dt className="text-muted-foreground font-medium">سعر العميل</dt>
             <dd className="font-semibold" data-numeric>
               {fmt(Number(product.price_egp))} EGP
+            </dd>
+
+            <dt className="text-muted-foreground font-medium">سعر البيّاع</dt>
+            <dd className="font-semibold" data-numeric>
+              {product.seller_price_egp != null
+                ? `${fmt(Number(product.seller_price_egp))} EGP`
+                : '—'}
             </dd>
 
             <dt className="text-muted-foreground font-medium">المخزون</dt>
@@ -118,7 +125,7 @@ export function MerchantProductSheet({
             <dt className="text-muted-foreground font-medium">عمولة البيّاع</dt>
             <dd className="font-semibold" data-numeric>
               {product.commission_rate != null
-                ? `${Number(product.commission_rate)}%`
+                ? `${Number(product.commission_rate)}% (من فرق السعر)`
                 : '—'}
             </dd>
 
@@ -131,8 +138,8 @@ export function MerchantProductSheet({
           </dl>
 
           <div className="by-note">
-            السعر والمخزون والتوفر بيتحكم فيهم التاجر من لوحته. الإدارة بتراجع
-            وتوقف المنتج لو مخالف.
+            سعر العميل وسعر البيّاع (والعمولة الناتجة) والمخزون بيتحكم فيهم التاجر
+            من لوحته. الإدارة بتراجع وتوقف المنتج لو مخالف.
           </div>
         </div>
 

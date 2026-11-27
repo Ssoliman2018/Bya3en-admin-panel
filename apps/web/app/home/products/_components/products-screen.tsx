@@ -18,10 +18,7 @@ import { Boxes, EyeOff, Package, Plus, Search, Store } from 'lucide-react';
 
 import pathsConfig from '~/config/paths.config';
 
-import {
-  updateProductCommissionAction,
-  updateProductStatusAction,
-} from '../_lib/server/products.actions';
+import { updateProductStatusAction } from '../_lib/server/products.actions';
 import type {
   CatalogProduct,
   ProductFilter,
@@ -129,23 +126,6 @@ export function ProductsScreen({
 
   function refresh() {
     router.refresh();
-  }
-
-  function saveCommission(productId: string, value: string) {
-    const commissionRate = Math.max(0, Math.min(40, Number(value) || 0));
-    startTransition(async () => {
-      try {
-        await updateProductCommissionAction({ productId, commissionRate });
-        toast.success(
-          `العمولة بقت ${commissionRate}% · هتظهر للبيّاعين على الطلبات الجديدة`,
-        );
-        refresh();
-      } catch (error) {
-        toast.error(
-          error instanceof Error ? error.message : 'فشل تحديث العمولة',
-        );
-      }
-    });
   }
 
   function setStatus(
@@ -299,7 +279,7 @@ export function ProductsScreen({
                 <th>التاجر</th>
                 <th className="n">السعر</th>
                 <th className="n">المخزون</th>
-                <th className="n">عمولة مقترحة</th>
+                <th className="n">عمولة البيّاع</th>
                 <th>اتبعت</th>
                 <th>الحالة</th>
                 <th />
@@ -327,7 +307,14 @@ export function ProductsScreen({
                       </div>
                     ) : null}
                   </td>
-                  <td className="n">{fmt(Number(product.price_egp))}</td>
+                  <td className="n">
+                    {fmt(Number(product.price_egp))}
+                    {product.seller_price_egp != null ? (
+                      <div className="text-muted-foreground text-xs">
+                        بيّاع {fmt(Number(product.seller_price_egp))}
+                      </div>
+                    ) : null}
+                  </td>
                   <td className="n">{product.stock}</td>
                   <td className="n">
                     {product.commission_rate != null
@@ -445,31 +432,15 @@ export function ProductsScreen({
                       )}
                     </td>
                     <td className="n">
-                      <span className="inline-flex items-center gap-1">
-                        <input
-                          className="by-cell"
-                          type="number"
-                          min={0}
-                          max={40}
-                          step={0.1}
-                          defaultValue={
-                            product.commission_rate != null
-                              ? Number(product.commission_rate)
-                              : 0
-                          }
-                          aria-label="نسبة العمولة"
-                          disabled={pending}
-                          onBlur={(e) =>
-                            saveCommission(product.id, e.target.value)
-                          }
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                              (e.target as HTMLInputElement).blur();
-                            }
-                          }}
-                        />
-                        %
-                      </span>
+                      {product.commission_rate != null
+                        ? `${Number(product.commission_rate)}%`
+                        : '—'}
+                      {product.owner_type === 'merchant' &&
+                      product.seller_price_egp != null ? (
+                        <div className="text-muted-foreground text-xs">
+                          من فرق السعر
+                        </div>
+                      ) : null}
                     </td>
                     <td>
                       {statusPill(product)}

@@ -89,11 +89,21 @@ export const updateCommissionProductRateAction = enhanceAction(
 
     const { data: product, error: loadError } = await client
       .from('products')
-      .select('name_ar, commission_rate')
+      .select('name_ar, commission_rate, owner_type')
       .eq('id', data.productId)
       .maybeSingle();
 
     if (loadError) throw new Error(loadError.message);
+
+    if (product?.owner_type === 'merchant') {
+      throw new Error(
+        'عمولة منتجات التجار بتتحدد من فرق سعر العميل وسعر البيّاع · مش قابلة للتعديل من الأدمن',
+      );
+    }
+
+    if (data.ratePct < 2.5 || data.ratePct > 15) {
+      throw new Error('عمولة البيّاع لازم تكون بين 2.5% و 15%');
+    }
 
     const { error } = await client
       .from('products')
@@ -118,7 +128,7 @@ export const updateCommissionProductRateAction = enhanceAction(
   {
     schema: z.object({
       productId: z.string().uuid(),
-      ratePct: z.coerce.number().min(0).max(100),
+      ratePct: z.coerce.number().min(2.5).max(15),
     }),
   },
 );

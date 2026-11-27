@@ -262,20 +262,27 @@ export function ProductFormDrawer({
                   htmlFor="commissionRate"
                   className="text-[12.5px] font-bold"
                 >
-                  عمولة البيّاع %
+                  عمولة البيّاع % (منتجات بياعين)
                 </Label>
                 <Input
                   id="commissionRate"
                   name="commissionRate"
                   type="number"
-                  min={0}
-                  max={40}
+                  min={2.5}
+                  max={15}
                   step="0.1"
                   required
                   className="h-10 rounded-[10px]"
                   value={rate}
-                  onChange={(e) => setRate(Number(e.target.value) || 0)}
+                  onChange={(e) => {
+                    const next = Number(e.target.value) || 0;
+                    setRate(Math.min(15, Math.max(2.5, next)));
+                  }}
                 />
+                <p className="text-muted-foreground text-[11px]">
+                  منتجات التجار بتتحسب العمولة تلقائي من فرق سعر العميل وسعر
+                  البيّاع (2.5%–15%).
+                </p>
               </div>
               <div className="grid gap-2">
                 <Label className="text-[12.5px] font-bold">هامش الربح</Label>

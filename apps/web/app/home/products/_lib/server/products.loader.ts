@@ -15,6 +15,7 @@ export type CatalogProduct = {
   brand: string | null;
   description_ar: string | null;
   price_egp: number;
+  seller_price_egp: number | null;
   compare_at_price_egp: number | null;
   cost_egp: number | null;
   stock: number;
@@ -45,7 +46,7 @@ function normalizeProduct(row: Record<string, unknown>): CatalogProduct {
 }
 
 const PRODUCT_SELECT =
-  'id, name_ar, brand, description_ar, price_egp, compare_at_price_egp, cost_egp, stock, status, owner_type, is_hidden, commission_rate, rejection_reason, category_id, created_at, categories(name_ar), merchants(id, store_name, status)';
+  'id, name_ar, brand, description_ar, price_egp, seller_price_egp, compare_at_price_egp, cost_egp, stock, status, owner_type, is_hidden, commission_rate, rejection_reason, category_id, created_at, categories(name_ar), merchants(id, store_name, status)';
 
 export async function loadProducts(
   filter: ProductFilter = 'all',
@@ -137,7 +138,7 @@ export async function loadProduct(productId: string) {
   const { data, error } = await client
     .from('products')
     .select(
-      'id, slug, name_ar, name_en, brand, description_ar, category_id, owner_type, merchant_account_id, merchant_id, status, price_egp, compare_at_price_egp, cost_egp, stock, commission_rate, is_hidden, rejection_reason, tags, created_at, updated_at, categories(name_ar), merchants(id, store_name, status)',
+      'id, slug, name_ar, name_en, brand, description_ar, category_id, owner_type, merchant_account_id, merchant_id, status, price_egp, seller_price_egp, compare_at_price_egp, cost_egp, stock, commission_rate, is_hidden, rejection_reason, tags, created_at, updated_at, categories(name_ar), merchants(id, store_name, status)',
     )
     .eq('id', productId)
     .maybeSingle();

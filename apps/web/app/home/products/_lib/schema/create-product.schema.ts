@@ -22,7 +22,7 @@ export const CreateBayya3eenProductSchema = z.object({
     }
 
     return value;
-  }, z.coerce.number().min(0).max(100).optional()),
+  }, z.coerce.number().min(2.5).max(15).optional()),
   descriptionAr: z.string().trim().optional(),
   status: z.enum(['draft', 'live']).default('live'),
 });
